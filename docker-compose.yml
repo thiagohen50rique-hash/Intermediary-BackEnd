@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  # Serviço 1: Banco de Dados PostgreSQL
+  postgres:
+    image: postgres:16
+    container_name: db_escola
+    environment:
+      POSTGRES_USER: ${USUARIO_POSTGRESQL}
+      POSTGRES_PASSWORD: ${SENHA_POSTGRESQL}
+      POSTGRES_DB: escola_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  # Serviço 2: pgAdmin (Interface Gráfica)
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin_escola
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${USUARIO_PGADMIN}
+      PGADMIN_DEFAULT_PASSWORD: ${SENHA_PGADMIN}
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+
+volumes:
+  pgdata:
